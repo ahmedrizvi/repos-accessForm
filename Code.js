@@ -16,13 +16,7 @@ function doPost(e){
   // Get form data from the request parameters
   var formData = e.parameter;
 
-  // Check if termsCheck is not present or false
-  if (formData.termsCheck === undefined || formData.termsCheck === 'false') {
-    // Return a response indicating that terms need to be accepted
-    return ContentService.createTextOutput("Form submission failed: You must accept the terms and conditions.");
-  }
-
-  // Add timestamp if required
+  // Add timestamp for new submission
   if (ADD_TIMESTAMP) {
     formData.timestamp = new Date();
   }
