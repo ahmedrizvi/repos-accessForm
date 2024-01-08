@@ -1,0 +1,25 @@
+<script>
+window.AlanWells_shwSpnr = function(a,b) {//Show the spinner
+  //console.log('a: ' + a)
+  AlanWells_displayinline(a);//Call a function to show a hidden HTML element
+  var daSpinHtml = '<div><img src="//c4a54d10381f750e81dcc323aed21e2c95725815.googledrive.com/host/0Bwyqwd2fAHMMallsNkNOV0RfcTg/wait_progress.gif"></div>';
+  AlanWells_inHtml(a,daSpinHtml);//Call a function that injects HTML into HTML element a
+};
+
+window.AlanWells_hideSpnr = function(a,b) {
+  AlanWells_inHtml(a,"");//If spinner was displayed, make sure it gets turned off
+  AlanWells_hide(a);
+};
+
+window.AlanWells_displayinline = function(a) {
+  document.getElementById(a).style.display = "inline";//See https://www.w3schools.com/jsref/prop_style_display.asp
+};
+
+window.AlanWells_inHtml = function(a,b) {//Inject HTML into an HTML element
+  document.getElementById(a).innerHTML = b;//For information https://www.w3schools.com/jsref/prop_html_innerhtml.asp
+};
+
+window.AlanWells_hide = function(a) {//Hide an HTML element
+  document.getElementById(a).style.display = "none";//See https://www.w3schools.com/jsref/prop_style_display.asp
+};
+</script>

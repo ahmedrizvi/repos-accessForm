@@ -1,0 +1,170 @@
+<script>
+  window.clearIt = function (thisEl) {//Clear the message to the user
+    document.getElementById('msgToUsr').style.display = 'none';//Hide the element named msgToUsr
+    thisEl.style.backgroundColor = "";//Remove the background color
+  };
+
+  // Receives the HTML form element for processing
+  window.submitForm = function (event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Retrieve form element
+    var form = document.getElementById("myForm");
+
+    // Object for storing form data
+    var formData = {};
+
+    // Check if terms checkbox is selected
+    var termsChecked = form.elements["termsCheck"].checked;
+
+    // Continue only if terms checkbox is selected
+    if (termsChecked) {
+      // Iterate through form elements and add their values to formData object
+      for (var elementIndex=0; elementIndex<form.elements.length; elementIndex++){
+        var element = form.elements[elementIndex];
+
+         // Check if element is an input, select, or textarea
+        if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
+          // Exclude termsCheck field
+          if (element.name != "termsCheck") {
+            // Add the value to the formData object using the element's name as the key
+            formData[element.name] = element.value; 
+          }
+        }
+      }
+      // formData object contains all the form field values
+      // Log the formData object to the console for debugging
+      console.log(formData);
+    } else {
+      // Display a message prompting user to check the conditions
+      alert("Please agree to the terms before submitting the form.");
+    }    
+  };
+
+
+  // displays an input field for when the "Other" radio button is clicked
+  function toggleOtherTitle() {
+    var otherTitleInput = document.getElementById("otherTitle");
+    var title6Radio = document.getElementById("title6");
+
+    if (title6Radio.checked) {
+      otherTitleInput.style.display = "block"; // Show the textbox
+    } else {
+      otherTitleInput.style.display = "none"; // Hide the textbox
+    }
+  }
+
+  // Add event listeners to the radio buttons to toggle the textbox
+  var titleRadios = document.getElementsByName("positionTitle");
+  for (var i = 0; i < titleRadios.length; i++) {
+    titleRadios[i].addEventListener("change", toggleOtherTitle);
+  }
+
+  // Make the Supervisor section of the form dynamic so that only certain radio selections make the input visible
+  function toggleSupervisorSection() {
+    var otherStatusRadio = document.getElementById("otherStatus");
+    var titleRadios = [
+      document.getElementById("title4"),
+      document.getElementById("title5"),
+      document.getElementById("title6")
+    ];
+    var supervisorSection = document.getElementById("supervisorSection");
+    var anyTitleChecked = titleRadios.some(function (radio) {
+      return radio.checked;
+    });
+
+    supervisorSection.style.display = otherStatusRadio.checked && anyTitleChecked ? "block" : "none";
+  }
+  // Add event listeners to relevant radio buttons
+  document.getElementById("otherStatus").addEventListener("change", toggleSupervisorSection);
+  titleRadios.forEach(function (radio) {
+    radio.addEventListener("change", toggleSupervisorSection);
+  });
+
+  // Add event listeners to the radio buttons to toggle the section
+  var employeeStatusRadios = document.getElementsByName("employeeStatus");
+  for (var i = 0; i < employeeStatusRadios.length; i++) {
+    employeeStatusRadios[i].addEventListener("change", toggleSupervisorSection);
+  }
+
+  // Counter to keep track of room entries on form
+  var roomEntryCounter = 1;
+
+  // Event listener for "+ Rooms" button
+  document.getElementById("newRoomEntry").addEventListener("click", function () {
+    // Clone the room entry container
+    var roomEntryContainer = document.getElementById("roomEntryContainer");
+    var newRoomEntry = roomEntryContainer.firstElementChild.cloneNode(true);
+
+    // Increment the room entry counter and set a new ID
+    roomEntryCounter++;
+    newRoomEntry.id = "roomEntry" + roomEntryCounter;
+
+    // Clear input values in the new room entry
+    var inputs = newRoomEntry.querySelectorAll("input, select");
+    inputs.forEach(function (input) {
+      input.value = "";
+    });
+
+    // Append the new room entry to the room entry container
+    roomEntryContainer.appendChild(newRoomEntry);
+
+    // Show the delete button
+    document.getElementById("deleteRoomEntry").style.display = "inline-block";
+
+    // Add count indicator span to the cloned room entry label, before the existing content
+    var labels = newRoomEntry.querySelectorAll("h3");
+    labels.forEach(function (label) {
+      var countSpan = document.createElement("span");
+      countSpan.textContent = "(" + roomEntryCounter + ") ";
+      label.insertBefore(countSpan, label.firstChild);
+    });
+
+    // Scroll to the very bottom of the page
+    setTimeout(function () {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }, 0);
+  });
+
+  // Event listener for "Delete" button
+  document.getElementById("deleteRoomEntry").addEventListener("click", function () {
+    if (roomEntryCounter > 1) {
+      var roomEntryContainer = document.getElementById("roomEntryContainer");
+      var lastRoomEntry = document.getElementById("roomEntry" + roomEntryCounter);
+      roomEntryContainer.removeChild(lastRoomEntry);
+      roomEntryCounter--;
+
+      // Hide the delete button if there are no more room entries
+      if (roomEntryCounter === 1) {
+        document.getElementById("deleteRoomEntry").style.display = "none";
+      }
+
+      // Scroll to the very bottom of the page with smooth animation
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  });
+
+  // Hide the delete button initially
+  if (roomEntryCounter === 1) {
+    document.getElementById("deleteRoomEntry").style.display = "none";
+  }
+
+  // Validate the form before submission
+  function validateForm() {
+    var termsChecked = document.getElementById('termsCheck').checked;
+    if (!termsChecked) {
+      alert('You must agree to the terms.');
+      // Prevent form submission
+      return false;
+    }
+    // Allow form submission
+    return true;
+  }
+</script>

@@ -1,0 +1,75 @@
+<div id="formDiv">
+   <!-- Form div will be hidden after form submission -->
+   <!-- <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgAATU/AMS///9k=">  -->
+   <div id="msgToUsr"></div>
+   <form id="myForm" onsubmit="return validateForm()" action="https://script.google.com/a/macros/ontariotechu.net/s/AKfycbwdvoGkB92U1rlLGOOx-EETkI2kXGzmHF7AXC_3UVQ/dev" method="post">
+      <h1>Access Request Form</h1>
+      <section> <span>1</span>Personal details</section>
+      <h3>Name: <span style="color: red;">*</span></h3>
+      <input type="text" id="nameInput" name="name" onchange="clearIt(this)" placeholder="First & Last name"/>
+      <h3>Email Address: <span style="color: red;">*</span></h3>
+      <input type="text" id="emailInput" name="email" onchange="clearIt(this)" placeholder="john.doe@ontariotechu.ca"/>
+      <h3>Banner ID: <span style="color: red;">*</span></h3>
+      <input type="text" id="idInput" name="bannerid" onchange="clearIt(this)" placeholder="000000000"/>
+      <h3>Reason for Issue:</h3>
+      <input type="text" id="reasonInput" name="issueReason" onchange="clearIt(this)" placeholder="Enter reason for issue"/><br/>
+      <h3>Employee Status: <span style="color: red;">*</span></h3>
+      <label><input type="radio" id="fulltime" name="employeeStatus" value="Full Time">Full Time</label>
+      <label><input type="radio" id="otherStatus" name="employeeStatus" value="Part Time/Contract/Student">Part Time/Contract/Student</label>
+      <br/>
+      <h3>Position/Title <span style="color: red;">*</span></h3>
+      <label><input type="radio" id="title1" name="positionTitle" value="TTT">TTT</label>
+      <label><input type="radio" id="title2" name="positionTitle" value="TF">TF</label>
+      <label><input type="radio" id="title3" name="positionTitle" value="Staff">Staff</label>
+      <label><input type="radio" id="title4" name="positionTitle" value="Grad Student">Grad Student</label>
+      <label><input type="radio" id="title5" name="positionTitle" value="University Works Student">University Works Student</label>
+      <label><input type="radio" id="title6" name="positionTitle" value="Other">Other</label>
+      <input type="text" id="otherTitle" name="otherTitle" style="display: none;" placeholder="Enter Other Title">
+      <br/><br/>    
+      <section id="supervisorSection" style="display: none;">
+         <span>1a</span>Supervisor Information
+         <h3>Supervisor Name:</h3>
+         <input type="text" id="supervisorNameInput" name="supervisorName" onchange="clearIt(this)" placeholder="John Doe"/><br/><br/>
+      </section>
+      <section  onchange="clearIt(this)"> <span>2</span>Existing Ucard</section>
+      <h2>
+        Enter the 5 digits located on the back of the Ucard (Above the magnetic stripe)<br/><br/>
+        <b>Enter '0' if there is no number.</b>
+      </h2>
+      <input type="text" id="proxNumInput" name="proxNum" onchange="clearIt(this)" placeholder="##### or 0"><br/><br/>
+      <section  onchange="clearIt(this)"> <span>3</span>Access Request</section>
+      
+      <div id="roomEntryContainer">
+        <div class="roomEntry" id="roomEntry1">
+          <h3 id="roomNumsLabel">Room Numbers:</h3>
+          <input type="text" name="roomNums" onchange="clearIt(this)" placeholder="Ex. UA0000, UA0001, UA0002"/><br/>
+          <h3>Room Type: <span style="color: red;">*</span></h3>
+          <label><input type="radio" id="proxRoom" name="roomType" value="Prox">Prox</label>
+          <label><input type="radio" id="keyRoom" name="roomType" value="Key">Key</label>
+          <h3>Activation Date:</h3>
+          <input type="date" id="activationDate" name="activationDate"><br/>
+          <h3>Deactivation Date:</h3>
+          <input type="date" id="deactivationDate" name="deactivationDate"><br/><br/>
+        </div>
+      </div>
+      
+      <div id="buttonContainer">
+        <input type="button" id="newRoomEntry" name="newRoomEntry" value="+ Rooms">
+        <input type="button" id="deleteRoomEntry" name="deleteRoomEntry" value="Delete" style="display: none;">
+      </div>
+      <br/><br/><br/>
+      <section  onchange="clearIt(this)"> <span>5</span>Conditions of Issue</section>
+      <label>By submitting this form, you agree to abide by the terms of issue on the key and access card request forms.</label>
+      <input type="checkbox" id="termsCheck" name="termsCheck">
+      <br/><br/>
+      <input type="submit" id="submitForm" name="submitForm" value="Submit">
+   </form>
+</div>
+
+<div id="inProgress" style="display: none;">
+   <!-- Progress starts hidden, but will be shown after form submission. -->
+   Uploading. Please wait...
+</div>
+<div id="output">
+   <!-- Blank div will be filled with "Thanks.html" after form submission. -->
+</div>
