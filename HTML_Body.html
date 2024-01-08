@@ -31,7 +31,7 @@
          <h3>Supervisor Name:</h3>
          <input type="text" id="supervisorNameInput" name="supervisorName" onchange="clearIt(this)" placeholder="John Doe"/><br/><br/>
       </section>
-      <section  onchange="clearIt(this)"> <span>2</span>Existing Ucard</section>
+      <section  onchange="clearIt(this)"> <span>2</span>Existing Ucard<i class="required-asterisk">*</i></section>
       <h2>
         Enter the 5 digits located on the back of the Ucard (Above the magnetic stripe)<br/><br/>
         <b>Enter '0' if there is no number.</b>
@@ -42,8 +42,8 @@
       <div id="roomEntryContainer">
         <div class="roomEntry" id="roomEntry1">
           <h3 id="roomNumsLabel">Room Numbers:</h3>
-          <input type="text" name="roomNums" onchange="clearIt(this)" placeholder="Ex. UA0000, UA0001, UA0002"/><br/>
-          <h3>Room Type: <span style="color: red;">*</span></h3>
+          <input type="text" name="roomNums" onchange="checkRoomNumbers()" oninput="checkRoomNumbers()" placeholder="Ex. UA0000, UA0001, UA0002"/><br/>
+          <h3 id="roomTypeLabel">Room Type: </h3>
           <label><input type="radio" id="proxRoom" name="roomType" value="Prox">Prox</label>
           <label><input type="radio" id="keyRoom" name="roomType" value="Key">Key</label>
           <h3>Activation Date:</h3>

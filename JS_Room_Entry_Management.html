@@ -1,0 +1,69 @@
+<script>
+    // Counter to keep track of room entries on form
+    var roomEntryCounter = 1;
+
+    // Event listener for "+ Rooms" button
+    document.getElementById("newRoomEntry").addEventListener("click", function () {
+        // Clone the room entry container
+        var roomEntryContainer = document.getElementById("roomEntryContainer");
+        var newRoomEntry = roomEntryContainer.firstElementChild.cloneNode(true);
+
+        // Increment the room entry counter and set a new ID
+        roomEntryCounter++;
+        newRoomEntry.id = "roomEntry" + roomEntryCounter;
+
+        // Clear input values in the new room entry
+        var inputs = newRoomEntry.querySelectorAll("input, select");
+        inputs.forEach(function (input) {
+            input.value = "";
+        });
+
+        // Append the new room entry to the room entry container
+        roomEntryContainer.appendChild(newRoomEntry);
+
+        // Show the delete button
+        document.getElementById("deleteRoomEntry").style.display = "inline-block";
+
+        // Add count indicator span to the cloned room entry label, before the existing content
+        var labels = newRoomEntry.querySelectorAll("h3");
+        labels.forEach(function (label) {
+            var countSpan = document.createElement("span");
+            countSpan.textContent = "(" + roomEntryCounter + ") ";
+            label.insertBefore(countSpan, label.firstChild);
+        });
+
+        // Scroll to the very bottom of the page
+        setTimeout(function () {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth"
+            });
+        }, 0);
+    });
+
+    // Event listener for "Delete" button
+    document.getElementById("deleteRoomEntry").addEventListener("click", function () {
+        if (roomEntryCounter > 1) {
+            var roomEntryContainer = document.getElementById("roomEntryContainer");
+            var lastRoomEntry = document.getElementById("roomEntry" + roomEntryCounter);
+            roomEntryContainer.removeChild(lastRoomEntry);
+            roomEntryCounter--;
+
+            // Hide the delete button if there are no more room entries
+            if (roomEntryCounter === 1) {
+                document.getElementById("deleteRoomEntry").style.display = "none";
+            }
+
+            // Scroll to the very bottom of the page with smooth animation
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth"
+            });
+        }
+    });
+
+    // Hide the delete button initially
+    if (roomEntryCounter === 1) {
+        document.getElementById("deleteRoomEntry").style.display = "none";
+    }
+</script>

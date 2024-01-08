@@ -21,15 +21,15 @@
     // Continue only if terms checkbox is selected
     if (termsChecked) {
       // Iterate through form elements and add their values to formData object
-      for (var elementIndex=0; elementIndex<form.elements.length; elementIndex++){
+      for (var elementIndex = 0; elementIndex < form.elements.length; elementIndex++) {
         var element = form.elements[elementIndex];
 
-         // Check if element is an input, select, or textarea
+        // Check if element is an input, select, or textarea
         if (element.tagName === "INPUT" || element.tagName === "SELECT" || element.tagName === "TEXTAREA") {
           // Exclude termsCheck field
           if (element.name != "termsCheck") {
             // Add the value to the formData object using the element's name as the key
-            formData[element.name] = element.value; 
+            formData[element.name] = element.value;
           }
         }
       }
@@ -39,7 +39,7 @@
     } else {
       // Display a message prompting user to check the conditions
       alert("Please agree to the terms before submitting the form.");
-    }    
+    }
   };
 
 
@@ -88,83 +88,34 @@
     employeeStatusRadios[i].addEventListener("change", toggleSupervisorSection);
   }
 
-  // Counter to keep track of room entries on form
-  var roomEntryCounter = 1;
+  // 
+  function checkRoomNumbers() {
+    var roomNumbersInput = document.querySelector(".roomEntry input[name='roomNums']");
+    var roomTypeLabel = document.getElementById("roomTypeLabel");
+    var roomTypeAsterisk = roomTypeLabel.querySelector('.required-asterisk');
+    var roomTypeRadios = document.getElementsByName("roomType");
 
-  // Event listener for "+ Rooms" button
-  document.getElementById("newRoomEntry").addEventListener("click", function () {
-    // Clone the room entry container
-    var roomEntryContainer = document.getElementById("roomEntryContainer");
-    var newRoomEntry = roomEntryContainer.firstElementChild.cloneNode(true);
-
-    // Increment the room entry counter and set a new ID
-    roomEntryCounter++;
-    newRoomEntry.id = "roomEntry" + roomEntryCounter;
-
-    // Clear input values in the new room entry
-    var inputs = newRoomEntry.querySelectorAll("input, select");
-    inputs.forEach(function (input) {
-      input.value = "";
-    });
-
-    // Append the new room entry to the room entry container
-    roomEntryContainer.appendChild(newRoomEntry);
-
-    // Show the delete button
-    document.getElementById("deleteRoomEntry").style.display = "inline-block";
-
-    // Add count indicator span to the cloned room entry label, before the existing content
-    var labels = newRoomEntry.querySelectorAll("h3");
-    labels.forEach(function (label) {
-      var countSpan = document.createElement("span");
-      countSpan.textContent = "(" + roomEntryCounter + ") ";
-      label.insertBefore(countSpan, label.firstChild);
-    });
-
-    // Scroll to the very bottom of the page
-    setTimeout(function () {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-      });
-    }, 0);
-  });
-
-  // Event listener for "Delete" button
-  document.getElementById("deleteRoomEntry").addEventListener("click", function () {
-    if (roomEntryCounter > 1) {
-      var roomEntryContainer = document.getElementById("roomEntryContainer");
-      var lastRoomEntry = document.getElementById("roomEntry" + roomEntryCounter);
-      roomEntryContainer.removeChild(lastRoomEntry);
-      roomEntryCounter--;
-
-      // Hide the delete button if there are no more room entries
-      if (roomEntryCounter === 1) {
-        document.getElementById("deleteRoomEntry").style.display = "none";
+    if (roomNumbersInput.value.trim() !== "") {
+      // Add red asterisk if not already present
+      if (!roomTypeAsterisk) {
+        var asterisk = document.createElement('i');
+        asterisk.className = 'required-asterisk';
+        asterisk.textContent = '*';
+        roomTypeLabel.appendChild(asterisk);
       }
-
-      // Scroll to the very bottom of the page with smooth animation
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-      });
+      // Make Room Type radio buttons mandatory
+      for (var radio of roomTypeRadios) {
+        radio.required = true;
+      }
+    } else {
+      // Remove red asterisk if present
+      if (roomTypeAsterisk) {
+        roomTypeLabel.removeChild(roomTypeAsterisk);
+      }
+      // Make Room Type radio buttons not mandatory
+      for (var radio of roomTypeRadios) {
+        radio.required = false;
+      }
     }
-  });
-
-  // Hide the delete button initially
-  if (roomEntryCounter === 1) {
-    document.getElementById("deleteRoomEntry").style.display = "none";
-  }
-
-  // Validate the form before submission
-  function validateForm() {
-    var termsChecked = document.getElementById('termsCheck').checked;
-    if (!termsChecked) {
-      alert('You must agree to the terms.');
-      // Prevent form submission
-      return false;
-    }
-    // Allow form submission
-    return true;
   }
 </script>

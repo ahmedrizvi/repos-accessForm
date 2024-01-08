@@ -1,0 +1,93 @@
+<script>
+    // Validate form elements prior to submission
+    function validateForm() {
+        var termsChecked = document.getElementById('termsCheck').checked;
+
+        // Define validation rules for each field
+        var validationRules = [
+            { fieldId: 'nameInput', minLength: 4, message: 'Name must contain at least 4 characters.' },
+            { fieldId: 'emailInput', minLength: 5, message: 'Email Address must contain at least 4 characters.' },
+            { fieldId: 'idInput', length: 9, message: 'Banner ID must be 9 characters.' },
+            { fieldGroupName: 'employeeStatus', message: 'Please select Employee Status.' },
+            { fieldGroupName: 'positionTitle', message: 'Please select Position/Title.' },
+            { customValidation: validateSupervisorName, message: 'Supervisor Name is required for selected Employee Status and Position/Title.' },
+            { fieldId: 'proxNumInput', pattern: /^(0|\d{5}|)$/, message: 'Existing Ucard should be either 0 or a 5-digit string.' }
+        ];
+
+        // Check each validation rule
+        for (var rule of validationRules) {
+            if (!validateField(rule)) {
+                return false;
+            }
+        }
+
+        if (!termsChecked) {
+            alert('You must agree to the terms.');
+            // Prevent form submission
+            return false;
+        }
+
+        // Allow form submission
+        return true;
+    }
+
+    // Validate a single field based on the provided rules
+    function validateField(rule) {
+        if (rule.fieldId) {
+            return validateLength(rule.fieldId, rule.minLength, rule.length, rule.message);
+        } else if (rule.fieldGroupName) {
+            return validateGroup(rule.fieldGroupName, rule.message);
+        } else if (rule.customValidation) {
+            return rule.customValidation(rule.message);
+        }
+
+        return true;
+    }
+
+    // Validate the length of an input field
+    function validateLength(fieldId, minLength, exactLength, message) {
+        var input = document.getElementById(fieldId);
+
+        if ((exactLength && input.value.length !== exactLength) ||
+            (minLength && input.value.length < minLength)) {
+            alert(message);
+            return false;
+        }
+
+        return true;
+    }
+
+    // Validate a group of radio buttons or checkboxes
+    function validateGroup(fieldGroupName, message) {
+        var inputs = document.getElementsByName(fieldGroupName);
+        var selectedInput = Array.from(inputs).find(input => input.checked);
+
+        if (!selectedInput) {
+            alert(message);
+            return false;
+        }
+
+        return true;
+    }
+
+    // Custom validation for Supervisor Name
+    function validateSupervisorName(message) {
+        var employeeStatusInputs = document.getElementsByName('employeeStatus');
+        var selectedEmployeeStatus = Array.from(employeeStatusInputs).find(input => input.checked);
+
+        var positionTitleInputs = document.getElementsByName('positionTitle');
+        var selectedPositionTitle = Array.from(positionTitleInputs).find(input => input.checked);
+
+        if (selectedEmployeeStatus && selectedPositionTitle &&
+            selectedEmployeeStatus.value === 'Part Time/Contract/Student' &&
+            (selectedPositionTitle.value === 'Grad Student' || selectedPositionTitle.value === 'University Works Student')) {
+            var supervisorNameInput = document.getElementById('supervisorNameInput');
+            if (supervisorNameInput.value.trim() === '') {
+                alert(message);
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
