@@ -50,37 +50,3 @@ function writeToSheet(data){
 }
 
 var LOG_GLOBAL = {};
-
-
-function ll(a,b,c) { //This is for debugging purposes only
-try{
-  var args,data,i,ss,sh,thisVal;
-  if (!a) return;
-  
-  if (LOG_GLOBAL.a !== true) {
-    ss=SpreadsheetApp.openById('');
-    sh=ss.getSheetByName('Sheet1');
-    
-    LOG_GLOBAL.a = true;
-    LOG_GLOBAL.sh = sh;
-    sh.clearContents();
-  }
-
-  args = [a,b,c];
-  data = [];
-  for (i=0;i<3;i++) {
-    thisVal = args[i];
-    if (thisVal === undefined && i > 0) {
-      break;
-    }
-    if (thisVal === null) {thisVal = 'NULLLL';}
-    if (thisVal === false) {thisVal = 'FALZZE';}
-    if (thisVal === true) {thisVal = 'TREWWW';}
-    data.push(thisVal);
-  }
-
-  LOG_GLOBAL.sh.appendRow(data);
-  SpreadsheetApp.flush();
-}catch(e){};
-    
-};
