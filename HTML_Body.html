@@ -4,7 +4,7 @@
    <div id="msgToUsr"></div>
    <form id="myForm" onsubmit="return validateForm()" action="https://script.google.com/a/macros/ontariotechu.net/s/AKfycbwdvoGkB92U1rlLGOOx-EETkI2kXGzmHF7AXC_3UVQ/dev" method="post">
       <h1>Access Request Form</h1>
-      <section> <span>1</span>Personal details</section>
+      <section> <span>1</span>Personal Details</section>
       <h3>Name: <span style="color: red;">*</span></h3>
       <input type="text" id="nameInput" name="name" onchange="clearIt(this)" placeholder="First & Last name"/>
       <h3>Email Address: <span style="color: red;">*</span></h3>
@@ -26,18 +26,18 @@
       <label><input type="radio" id="title6" name="positionTitle" value="Other">Other</label>
       <input type="text" id="otherTitle" name="otherTitle" style="display: none;" placeholder="Enter Other Title">
       <br/><br/>    
-      <section id="supervisorSection" style="display: none;">
-         <span>1a</span>Supervisor Information
+      <section id="supervisorSection">
+         <span>2</span>Supervisor Information
          <h3>Supervisor Name:</h3>
          <input type="text" id="supervisorNameInput" name="supervisorName" onchange="clearIt(this)" placeholder="John Doe"/><br/><br/>
       </section>
-      <section  onchange="clearIt(this)"> <span>2</span>Existing Ucard<i class="required-asterisk">*</i></section>
+      <section  onchange="clearIt(this)"> <span>3</span>Existing Ucard<i class="required-asterisk">*</i></section>
       <h2>
         Enter the 5 digits located on the back of the Ucard (Above the magnetic stripe)<br/><br/>
         <b>Enter '0' if there is no number.</b>
       </h2>
       <input type="text" id="proxNumInput" name="proxNum" onchange="clearIt(this)" placeholder="##### or 0"><br/><br/>
-      <section  onchange="clearIt(this)"> <span>3</span>Access Request</section>
+      <section  onchange="clearIt(this)"> <span>4</span>Access Request</section>
       
       <div id="roomEntryContainer">
         <div class="roomEntry" id="roomEntry1">
@@ -58,7 +58,7 @@
         <input type="button" id="deleteRoomEntry" name="deleteRoomEntry" value="Delete" style="display: none;">
       </div>
       <br/><br/><br/>
-      <section  onchange="clearIt(this)"> <span>5</span>Conditions of Issue</section>
+      <section  onchange="clearIt(this)"> <span>6</span>Conditions of Issue</section>
       <label>By submitting this form, you agree to abide by the terms of issue on the key and access card request forms.</label>
       <input type="checkbox" id="termsCheck" name="termsCheck">
       <br/><br/>

@@ -11,7 +11,8 @@
             { fieldGroupName: 'employeeStatus', message: 'Please select Employee Status.' },
             { fieldGroupName: 'positionTitle', message: 'Please select Position/Title.' },
             { customValidation: validateSupervisorName, message: 'Supervisor Name is required for selected Employee Status and Position/Title.' },
-            { fieldId: 'proxNumInput', pattern: /^(0|\d{5}|)$/, message: 'Existing Ucard should be either 0 or a 5-digit string.' }
+            { fieldId: 'proxNumInput', pattern: "^(0|\\d{5})$", message: 'Existing Ucard should be either be 0, or a 5-digit number.' }
+
         ];
 
         // Check each validation rule
@@ -34,13 +35,17 @@
     // Validate a single field based on the provided rules
     function validateField(rule) {
         if (rule.fieldId) {
-            return validateLength(rule.fieldId, rule.minLength, rule.length, rule.message);
+            if (rule.minLength || rule.length) {
+                return validateLength(rule.fieldId, rule.minLength, rule.length, rule.message);
+            }
+            if (rule.pattern) {
+                return validatePattern(rule.fieldId, rule.pattern, rule.message);
+            }
         } else if (rule.fieldGroupName) {
             return validateGroup(rule.fieldGroupName, rule.message);
         } else if (rule.customValidation) {
             return rule.customValidation(rule.message);
         }
-
         return true;
     }
 
@@ -57,6 +62,16 @@
         return true;
     }
 
+    function validatePattern(fieldId, patternString, message) {
+        var input = document.getElementById(fieldId);
+        var pattern = new RegExp(patternString);
+        if (!pattern.test(input.value)) {
+            alert(message);
+            return false;
+        }
+        return true;
+    }
+
     // Validate a group of radio buttons or checkboxes
     function validateGroup(fieldGroupName, message) {
         var inputs = document.getElementsByName(fieldGroupName);
@@ -69,7 +84,7 @@
 
         return true;
     }
-
+    
     // Custom validation for Supervisor Name
     function validateSupervisorName(message) {
         var employeeStatusInputs = document.getElementsByName('employeeStatus');
