@@ -5,12 +5,12 @@
    <form id="myForm" onsubmit="return validateForm()" action="https://script.google.com/a/macros/ontariotechu.net/s/AKfycbwdvoGkB92U1rlLGOOx-EETkI2kXGzmHF7AXC_3UVQ/dev" method="post">
       <h1>Access Request Form</h1>
       <section> <span>1</span>Personal Details</section>
+      <h3>Banner ID: <span style="color: red;">*</span></h3>
+      <input type="text" id="idInput" name="bannerid" onchange="clearIt(this)" placeholder="000000000"/>
       <h3>Name: <span style="color: red;">*</span></h3>
       <input type="text" id="nameInput" name="name" onchange="clearIt(this)" placeholder="First & Last name"/>
       <h3>Email Address: <span style="color: red;">*</span></h3>
       <input type="text" id="emailInput" name="email" onchange="clearIt(this)" placeholder="john.doe@ontariotechu.ca"/>
-      <h3>Banner ID: <span style="color: red;">*</span></h3>
-      <input type="text" id="idInput" name="bannerid" onchange="clearIt(this)" placeholder="000000000"/>
       <h3>Reason for Issue:</h3>
       <input type="text" id="reasonInput" name="issueReason" onchange="clearIt(this)" placeholder="Enter reason for issue"/><br/>
       <h3>Employee Status: <span style="color: red;">*</span></h3>
@@ -21,9 +21,10 @@
       <label><input type="radio" id="title1" name="positionTitle" value="TTT">TTT</label>
       <label><input type="radio" id="title2" name="positionTitle" value="TF">TF</label>
       <label><input type="radio" id="title3" name="positionTitle" value="Staff">Staff</label>
-      <label><input type="radio" id="title4" name="positionTitle" value="Grad Student">Grad Student</label>
-      <label><input type="radio" id="title5" name="positionTitle" value="University Works Student">University Works Student</label>
-      <label><input type="radio" id="title6" name="positionTitle" value="Other">Other</label>
+      <label><input type="radio" id="title4" name="positionTitle" value="TA">TA</label>
+      <label><input type="radio" id="title5" name="positionTitle" value="Grad Student">Grad Student</label>
+      <label><input type="radio" id="title6" name="positionTitle" value="University Works Student">University Works Student</label>
+      <label><input type="radio" id="title7" name="positionTitle" value="Other">Other</label>
       <input type="text" id="otherTitle" name="otherTitle" style="display: none;" placeholder="Enter Other Title">
       <br/><br/>    
       <section id="supervisorSection">
