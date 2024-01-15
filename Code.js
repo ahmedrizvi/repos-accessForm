@@ -33,7 +33,7 @@ function writeToSheet(data){
   var targetSheet = sheet.getSheetByName(SHEET_NAME_TO_WRITE_DATA_TO);
 
   // Define the order of fields as they should appear in the spreadsheet
-  var fields = ['timestamp', 'name', 'email', 'bannerid', 'issueReason', 'employeeStatus', 'positionTitle', 'existingUcard', 'roomNumbers', 'roomType', 'activationDate', 'deactivationDate'];
+  var fields = ['timestamp', 'name', 'email', 'bannerid', 'issueReason', 'employeeStatus', 'positionTitle', 'proxNum', 'supervisorName', 'roomNumbers', 'roomType', 'activationDate', 'deactivationDate'];
   // Append the data to the sheet
   var values = fields.map(function(field){
     // condition handles unvalidated fields
