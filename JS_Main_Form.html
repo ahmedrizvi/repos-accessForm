@@ -42,6 +42,43 @@
     }
   };
 
+  // Searches the database for an existing bannerid
+  function searchBannerid() {
+    var bannerid = document.getElementById("idInput").value;
+    var data = {
+      bannerid: bannerid
+    };
+    google.script.run.withSuccessHandler(updateForm).searchBannerid(data);
+  }
+
+  // Callback function to update the form after search
+  function updateForm(responseData) {
+    // Update name field
+    document.getElementById('nameInput').value = responseData.usersname;
+    // Update uCard field
+    document.getElementById('proxNumInput').value = responseData.ucard;
+
+    // Update employeeStatus radio buttons
+    var employeestatusRadios = document.getElementsByName('employeeStatus');
+    for (var i = 0; i < employeestatusRadios.length; i++) {
+      if (employeestatusRadios[i].value == responseData.employeestatus) {
+        employeestatusRadios[i].checked = true;
+        break;
+      }
+    }
+
+    // Update positionTitle radio buttons
+    var positionRadios = document.getElementsByName('positionTitle');
+    for (var i = 0; i < positionRadios.length; i++) {
+      if (positionRadios[i].value == responseData.position) {
+        positionRadios[i].checked = true;
+        break;
+      }
+    }
+
+  }
+
+  document.getElementById("searchBannerid").addEventListener("click", searchBannerid);
 
   // displays an input field for when the "Other" radio button is clicked
   function toggleOtherTitle() {
@@ -79,7 +116,7 @@
   }
   */
   // Add event listeners to relevant radio buttons
-  
+
   document.getElementById("otherStatus").addEventListener("change", toggleSupervisorSection);
   titleRadios.forEach(function (radio) {
     radio.addEventListener("change", toggleSupervisorSection);
