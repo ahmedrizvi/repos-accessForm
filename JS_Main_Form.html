@@ -43,7 +43,7 @@
   };
 
   // Searches the database for an existing bannerid
-  function searchBannerid() {
+  function callSearchBannerid() {
     console.log("search button was clicked");
     var bannerid = document.getElementById("idInput").value;
     var data = {
@@ -85,8 +85,6 @@
     }
 
   }
-
-  document.getElementById("searchBannerid").addEventListener("click", searchBannerid);
 
   // displays an input field for when the "Other" radio button is clicked
   function toggleOtherTitle() {
