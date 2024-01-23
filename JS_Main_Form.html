@@ -49,20 +49,27 @@
     var data = {
       bannerid: bannerid
     };
-    google.script.run.withSuccessHandler(updateForm).searchBannerid(data);
+    google.script.run.withSuccessHandler(updateForm).withFailureHandler(onFailure).searchBannerid(data);
+
+    // function to output error message if the google.script.run call fails
+    function onFailure(error) {
+      console.log('error: ' + error.message);
+    }
   }
 
   // Callback function to update the form after search
   function updateForm(responseData) {
     // Update name field
-    document.getElementById('nameInput').value = responseData.usersname;
+    document.getElementById('nameInput').value = responseData.usersName;
+    // Update supervisor field
+    document.getElementById('supervisorNameInput').value = responseData.supervisor;
     // Update uCard field
-    document.getElementById('proxNumInput').value = responseData.ucard;
+    document.getElementById('proxNumInput').value = responseData.uCard;
 
     // Update employeeStatus radio buttons
     var employeestatusRadios = document.getElementsByName('employeeStatus');
     for (var i = 0; i < employeestatusRadios.length; i++) {
-      if (employeestatusRadios[i].value == responseData.employeestatus) {
+      if (employeestatusRadios[i].value == responseData.employeeStatus) {
         employeestatusRadios[i].checked = true;
         break;
       }

@@ -15,7 +15,7 @@ function doGet() {
 function searchBannerid(data) {
   // Logging for debugging
   console.log('server side searchBannerid function was called');
-  console.log(data.bannerid);
+  console.log('bannerid in the passed data object\n', data.bannerid);
 
   // Send data to the web service
   var options = {
@@ -29,6 +29,7 @@ function searchBannerid(data) {
 
   // Parse the JSON data retrieved from the web service
   var responseData = JSON.parse(response.getContentText());
+  console.log('here is the response data\n', responseData);
   return responseData;
 }
 
@@ -43,7 +44,7 @@ function doPost(e) {
   }
 
   // Log the form data (Logger is specific to Google Apps Script)
-  Logger.log(formData);
+  console.log(formData);
 
   // Send data to the web service
   var options = {
