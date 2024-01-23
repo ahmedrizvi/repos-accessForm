@@ -99,20 +99,8 @@
     titleRadios[i].addEventListener("change", toggleOtherTitle);
   }
 
-  
-  // Add event listeners to relevant radio buttons
-  document.getElementById("otherStatus").addEventListener("change", toggleSupervisorSection);
-  titleRadios.forEach(function (radio) {
-    radio.addEventListener("change", toggleSupervisorSection);
-  });
-
-  // Add event listeners to the radio buttons to toggle the section
-  var employeeStatusRadios = document.getElementsByName("employeeStatus");
-  for (var i = 0; i < employeeStatusRadios.length; i++) {
-    employeeStatusRadios[i].addEventListener("change", toggleSupervisorSection);
-  }
-
-  // 
+  // Checks whether room numbers have been entered. Adds red asterisk to Room Type 
+  // label and makes Room Type radio buttons mandatory if room numbers have been entered
   function checkRoomNumbers() {
     var roomNumbersInput = document.querySelector(".roomEntry input[name='roomNums']");
     var roomTypeLabel = document.getElementById("roomTypeLabel");

@@ -1,5 +1,6 @@
 ///CONSTANTS///
 const ADD_TIMESTAMP = true;
+
 // Function to build the HTML form
 function doGet() {
   var template = HtmlService.createTemplateFromFile('index');
@@ -53,7 +54,7 @@ function doPost(e) {
   // Send data to the web service and capture response (Current URL for testing purposes)
   UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
 
-  // Return a response to the user
+  // Post success message and allow return to form for new entries
   var formUrl = 'https://script.google.com/a/macros/ontariotechu.net/s/AKfycbwdvoGkB92U1rlLGOOx-EETkI2kXGzmHF7AXC_3UVQ/dev';
   var output = HtmlService.createHtmlOutput('<p>Form submitted successfully</p><button onclick="window.top.location.href=\'' + formUrl + '\'">Submit New Entry</button>');
   return output.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
