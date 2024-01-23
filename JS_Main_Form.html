@@ -44,6 +44,7 @@
 
   // Searches the database for an existing bannerid
   function searchBannerid() {
+    console.log("search button was clicked");
     var bannerid = document.getElementById("idInput").value;
     var data = {
       bannerid: bannerid
@@ -98,25 +99,8 @@
     titleRadios[i].addEventListener("change", toggleOtherTitle);
   }
 
-  // Make the Supervisor section of the form dynamic so that only certain radio selections make the input visible
-  /*
-  function toggleSupervisorSection() {
-    var otherStatusRadio = document.getElementById("otherStatus");
-    var titleRadios = [
-      document.getElementById("title4"),
-      document.getElementById("title5"),
-      document.getElementById("title6")
-    ];
-    var supervisorSection = document.getElementById("supervisorSection");
-    var anyTitleChecked = titleRadios.some(function (radio) {
-      return radio.checked;
-    });
-
-    supervisorSection.style.display = otherStatusRadio.checked && anyTitleChecked ? "block" : "none";
-  }
-  */
+  
   // Add event listeners to relevant radio buttons
-
   document.getElementById("otherStatus").addEventListener("change", toggleSupervisorSection);
   titleRadios.forEach(function (radio) {
     radio.addEventListener("change", toggleSupervisorSection);

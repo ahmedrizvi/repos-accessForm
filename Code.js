@@ -1,7 +1,6 @@
-//var SPREADSHEET_FILE_ID = '1zIJKlwkODjoVbLOl3_PeopvBiXgdju7bAk8BaPi1caQ';
-//var SHEET_NAME_TO_WRITE_DATA_TO = "Form Responses Test";
-//var ADD_TIMESTAMP = true;
-
+///CONSTANTS///
+const ADD_TIMESTAMP = true;
+// Function to build the HTML form
 function doGet() {
   var template = HtmlService.createTemplateFromFile('index');
 
@@ -11,8 +10,10 @@ function doGet() {
     .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 };
 
-function searchBannerid(data){
-  // Log the value for debugging
+// Function to pass in an object with bannerid
+function searchBannerid(data) {
+  // Logging for debugging
+  console.log('server side searchBannerid function was called');
   console.log(data.bannerid);
 
   // Send data to the web service
@@ -21,7 +22,7 @@ function searchBannerid(data){
     headers: {
       'Content-Type': 'application/json',
     },
-    payload: JSON.stringify({bannerid: data.bannerid})
+    payload: JSON.stringify({ bannerid: data.bannerid })
   };
   var response = UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
 
@@ -40,7 +41,7 @@ function doPost(e) {
     formData.timestamp = new Date();
   }
 
-  // Log the form data
+  // Log the form data (Logger is specific to Google Apps Script)
   Logger.log(formData);
 
   // Send data to the web service
@@ -52,26 +53,8 @@ function doPost(e) {
   // Send data to the web service and capture response (Current URL for testing purposes)
   UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
 
-  // Write data to the spreadsheet
-  //writeToSheet(formData);
-
   // Return a response to the user
   var formUrl = 'https://script.google.com/a/macros/ontariotechu.net/s/AKfycbwdvoGkB92U1rlLGOOx-EETkI2kXGzmHF7AXC_3UVQ/dev';
   var output = HtmlService.createHtmlOutput('<p>Form submitted successfully</p><button onclick="window.top.location.href=\'' + formUrl + '\'">Submit New Entry</button>');
   return output.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
-function writeToSheet(data) {
-  var sheet = SpreadsheetApp.openById(SPREADSHEET_FILE_ID);
-  var targetSheet = sheet.getSheetByName(SHEET_NAME_TO_WRITE_DATA_TO);
-
-  // Define the order of fields as they should appear in the spreadsheet
-  var fields = ['timestamp', 'name', 'email', 'bannerid', 'issueReason', 'employeeStatus', 'positionTitle', 'proxNum', 'supervisorName', 'roomNumbers', 'roomType', 'activationDate', 'deactivationDate'];
-  // Append the data to the sheet
-  var values = fields.map(function (field) {
-    // condition handles unvalidated fields
-    return data[field] || '';
-  });
-
-  targetSheet.appendRow(values);
 }
