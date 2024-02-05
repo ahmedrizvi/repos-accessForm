@@ -46,9 +46,18 @@
   function callSearchBannerid() {
     console.log("search button was clicked");
     var bannerid = document.getElementById("idInput").value;
+
+    // Check if bannerid is empty or not 9 digits
+    if(!bannerid || bannerid.length != 9){
+      alert("Please enter a valid Banner ID.");
+      return;
+    }
+
+    // bannerid is correct format, so setup object for searching the bannerid in the database
     var data = {
       bannerid: bannerid
     };
+    // call the server-side function to search the database, and receive the user object if successful
     google.script.run.withSuccessHandler(updateForm).withFailureHandler(onFailure).searchBannerid(data);
 
     // function to output error message if the google.script.run call fails
@@ -57,7 +66,7 @@
     }
   }
 
-  // Callback function to update the form after search
+  // Callback function to update the form after banner ID search
   function updateForm(responseData) {
     // Update name field
     document.getElementById('nameInput').value = responseData.usersName;
@@ -65,6 +74,8 @@
     document.getElementById('supervisorNameInput').value = responseData.supervisor;
     // Update uCard field
     document.getElementById('proxNumInput').value = responseData.uCard;
+    // Update email field
+    document.getElementById('emailInput').value = responseData.email;
 
     // Update employeeStatus radio buttons
     var employeestatusRadios = document.getElementsByName('employeeStatus');
@@ -83,7 +94,6 @@
         break;
       }
     }
-
   }
 
   // displays an input field for when the "Other" radio button is clicked

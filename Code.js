@@ -1,16 +1,6 @@
 ///CONSTANTS///
 const ADD_TIMESTAMP = true;
 
-// Function to build the HTML form
-function doGet() {
-  var template = HtmlService.createTemplateFromFile('index');
-
-  // Build and return HTML in IFRAME sandbox mode.
-  return template.evaluate()
-    .setTitle('OTU Access Request Form')
-    .setSandboxMode(HtmlService.SandboxMode.IFRAME);
-};
-
 // Function to pass in an object with bannerid
 function searchBannerid(data) {
   // Logging for debugging
@@ -27,11 +17,32 @@ function searchBannerid(data) {
   };
   var response = UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
 
-  // Parse the JSON data retrieved from the web service
-  var responseData = JSON.parse(response.getContentText());
-  console.log('here is the response data\n', responseData);
-  return responseData;
+  // Check the HTTP status code
+  var statusCode = response.getResponseCode();
+  if (statusCode == 200) {
+    // Parse the JSON data retrieved from the web service
+    var responseData = JSON.parse(response.getContentText());
+    console.log('here is the response data\n', responseData);
+    return responseData;
+  } else if (statusCode == 404) {
+    console.log('Not found');
+    return 'Not found';
+  } else {
+    console.log('An error occurred: ' + statusCode);
+    return 'An error occurred: ' + statusCode;
+  }
+
 }
+
+// Function to build the HTML form
+function doGet() {
+  var template = HtmlService.createTemplateFromFile('index');
+
+  // Build and return HTML in IFRAME sandbox mode.
+  return template.evaluate()
+    .setTitle('OTU Access Request Form')
+    .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+};
 
 // handles form submission
 function doPost(e) {
