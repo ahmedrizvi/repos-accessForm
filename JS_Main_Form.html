@@ -42,6 +42,59 @@
     }
   };
 
+  // Searches the database for an existing bannerid
+  function callSearchBannerid() {
+    console.log("search button was clicked");
+    var bannerid = document.getElementById("idInput").value;
+
+    // Check if bannerid is empty or not 9 digits
+    if(!bannerid || bannerid.length != 9){
+      alert("Please enter a valid Banner ID.");
+      return;
+    }
+
+    // bannerid is correct format, so setup object for searching the bannerid in the database
+    var data = {
+      bannerid: bannerid
+    };
+    // call the server-side function to search the database, and receive the user object if successful
+    google.script.run.withSuccessHandler(updateForm).withFailureHandler(onFailure).searchBannerid(data);
+
+    // function to output error message if the google.script.run call fails
+    function onFailure(error) {
+      console.log('error: ' + error.message);
+    }
+  }
+
+  // Callback function to update the form after banner ID search
+  function updateForm(responseData) {
+    // Update name field
+    document.getElementById('nameInput').value = responseData.usersName;
+    // Update supervisor field
+    document.getElementById('supervisorNameInput').value = responseData.supervisor;
+    // Update uCard field
+    document.getElementById('proxNumInput').value = responseData.uCard;
+    // Update email field
+    document.getElementById('emailInput').value = responseData.email;
+
+    // Update employeeStatus radio buttons
+    var employeestatusRadios = document.getElementsByName('employeeStatus');
+    for (var i = 0; i < employeestatusRadios.length; i++) {
+      if (employeestatusRadios[i].value == responseData.employeeStatus) {
+        employeestatusRadios[i].checked = true;
+        break;
+      }
+    }
+
+    // Update positionTitle radio buttons
+    var positionRadios = document.getElementsByName('positionTitle');
+    for (var i = 0; i < positionRadios.length; i++) {
+      if (positionRadios[i].value == responseData.position) {
+        positionRadios[i].checked = true;
+        break;
+      }
+    }
+  }
 
   // displays an input field for when the "Other" radio button is clicked
   function toggleOtherTitle() {
@@ -61,37 +114,8 @@
     titleRadios[i].addEventListener("change", toggleOtherTitle);
   }
 
-  // Make the Supervisor section of the form dynamic so that only certain radio selections make the input visible
-  /*
-  function toggleSupervisorSection() {
-    var otherStatusRadio = document.getElementById("otherStatus");
-    var titleRadios = [
-      document.getElementById("title4"),
-      document.getElementById("title5"),
-      document.getElementById("title6")
-    ];
-    var supervisorSection = document.getElementById("supervisorSection");
-    var anyTitleChecked = titleRadios.some(function (radio) {
-      return radio.checked;
-    });
-
-    supervisorSection.style.display = otherStatusRadio.checked && anyTitleChecked ? "block" : "none";
-  }
-  */
-  // Add event listeners to relevant radio buttons
-  
-  document.getElementById("otherStatus").addEventListener("change", toggleSupervisorSection);
-  titleRadios.forEach(function (radio) {
-    radio.addEventListener("change", toggleSupervisorSection);
-  });
-
-  // Add event listeners to the radio buttons to toggle the section
-  var employeeStatusRadios = document.getElementsByName("employeeStatus");
-  for (var i = 0; i < employeeStatusRadios.length; i++) {
-    employeeStatusRadios[i].addEventListener("change", toggleSupervisorSection);
-  }
-
-  // 
+  // Checks whether room numbers have been entered. Adds red asterisk to Room Type 
+  // label and makes Room Type radio buttons mandatory if room numbers have been entered
   function checkRoomNumbers() {
     var roomNumbersInput = document.querySelector(".roomEntry input[name='roomNums']");
     var roomTypeLabel = document.getElementById("roomTypeLabel");

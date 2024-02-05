@@ -1,18 +1,51 @@
-var SPREADSHEET_FILE_ID = '1zIJKlwkODjoVbLOl3_PeopvBiXgdju7bAk8BaPi1caQ';
-var SHEET_NAME_TO_WRITE_DATA_TO = "Form Responses Test";
-var ADD_TIMESTAMP = true;
+///CONSTANTS///
+const ADD_TIMESTAMP = true;
 
+// Function to pass in an object with bannerid
+function searchBannerid(data) {
+  // Logging for debugging
+  console.log('server side searchBannerid function was called');
+  console.log('bannerid in the passed data object\n', data.bannerid);
+
+  // Send data to the web service
+  var options = {
+    'method': 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    payload: JSON.stringify({ bannerid: data.bannerid })
+  };
+  var response = UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
+
+  // Check the HTTP status code
+  var statusCode = response.getResponseCode();
+  if (statusCode == 200) {
+    // Parse the JSON data retrieved from the web service
+    var responseData = JSON.parse(response.getContentText());
+    console.log('here is the response data\n', responseData);
+    return responseData;
+  } else if (statusCode == 404) {
+    console.log('Not found');
+    return 'Not found';
+  } else {
+    console.log('An error occurred: ' + statusCode);
+    return 'An error occurred: ' + statusCode;
+  }
+
+}
+
+// Function to build the HTML form
 function doGet() {
   var template = HtmlService.createTemplateFromFile('index');
 
   // Build and return HTML in IFRAME sandbox mode.
   return template.evaluate()
-      .setTitle('OTU Access Request Form')
-      .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+    .setTitle('OTU Access Request Form')
+    .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 };
 
 // handles form submission
-function doPost(e){
+function doPost(e) {
   // Get form data from the request parameters
   var formData = e.parameter;
 
@@ -21,26 +54,20 @@ function doPost(e){
     formData.timestamp = new Date();
   }
 
-  // Write data to the spreadsheet
-  writeToSheet(formData);
+  // Log the form data (Logger is specific to Google Apps Script)
+  console.log(formData);
 
-  // Return a response to the user
-  return ContentService.createTextOutput("Form submitted successfully");
+  // Send data to the web service
+  var options = {
+    'method': 'post',
+    'contentType': 'application/json',
+    'payload': JSON.stringify(formData)
+  };
+  // Send data to the web service and capture response (Current URL for testing purposes)
+  UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
+
+  // Post success message and allow return to form for new entries
+  var formUrl = 'https://script.google.com/a/macros/ontariotechu.net/s/AKfycbwdvoGkB92U1rlLGOOx-EETkI2kXGzmHF7AXC_3UVQ/dev';
+  var output = HtmlService.createHtmlOutput('<p>Form submitted successfully</p><button onclick="window.top.location.href=\'' + formUrl + '\'">Submit New Entry</button>');
+  return output.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
-
-function writeToSheet(data){
-  var sheet = SpreadsheetApp.openById(SPREADSHEET_FILE_ID);
-  var targetSheet = sheet.getSheetByName(SHEET_NAME_TO_WRITE_DATA_TO);
-
-  // Define the order of fields as they should appear in the spreadsheet
-  var fields = ['timestamp', 'name', 'email', 'bannerid', 'issueReason', 'employeeStatus', 'positionTitle', 'proxNum', 'supervisorName', 'roomNumbers', 'roomType', 'activationDate', 'deactivationDate'];
-  // Append the data to the sheet
-  var values = fields.map(function(field){
-    // condition handles unvalidated fields
-    return data[field] || '';
-  });
-
-  targetSheet.appendRow(values);
-}
-
-var LOG_GLOBAL = {};
