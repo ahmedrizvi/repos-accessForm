@@ -15,23 +15,26 @@ function searchBannerid(data) {
     },
     payload: JSON.stringify({ bannerid: data.bannerid })
   };
-  var response = UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
-
-  // Check the HTTP status code
-  var statusCode = response.getResponseCode();
-  if (statusCode == 200) {
-    // Parse the JSON data retrieved from the web service
+  try {
+    var response = UrlFetchApp.fetch('https://opossum-accurate-snake.ngrok-free.app/data', options);
+    var statusCode = response.getResponseCode();
     var responseData = JSON.parse(response.getContentText());
-    console.log('here is the response data\n', responseData);
-    return responseData;
-  } else if (statusCode == 404) {
-    console.log('Not found');
-    return 'Not found';
-  } else {
-    console.log('An error occurred: ' + statusCode);
-    return 'An error occurred: ' + statusCode;
-  }
 
+    if (statusCode == 200) {
+      console.log('here is the response data\n', responseData);
+      return responseData;
+    } else {
+      console.log('An error occurred: ' + statusCode);
+      return 'An error occurred: ' + statusCode;
+    }
+  } catch (error) {
+    if (error.message.includes('404')) {
+      return 'Not found';
+    }
+    else {
+      console.log('Request failed: ' + error.message);
+    }
+  }
 }
 
 // Function to build the HTML form

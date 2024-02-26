@@ -48,17 +48,28 @@
     var bannerid = document.getElementById("idInput").value;
 
     // Check if bannerid is empty or not 9 digits
-    if(!bannerid || bannerid.length != 9){
+    if (!bannerid || bannerid.length != 9) {
       alert("Please enter a valid Banner ID.");
       return;
     }
+    // Show loading overlay
+    var loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-overlay';
+    loadingOverlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(loadingOverlay);
 
     // bannerid is correct format, so setup object for searching the bannerid in the database
     var data = {
       bannerid: bannerid
     };
     // call the server-side function to search the database, and receive the user object if successful
-    google.script.run.withSuccessHandler(updateForm).withFailureHandler(onFailure).searchBannerid(data);
+    google.script.run.withSuccessHandler(function (responseData) {
+      updateForm(responseData);
+      document.body.removeChild(loadingOverlay);
+    }).withFailureHandler(function (error) {
+      document.body.removeChild(loadingOverlay);
+      onFailure(error);
+    }).searchBannerid(data);
 
     // function to output error message if the google.script.run call fails
     function onFailure(error) {
@@ -68,6 +79,10 @@
 
   // Callback function to update the form after banner ID search
   function updateForm(responseData) {
+    if (responseData == 'Not found') {
+      alert("Banner ID not found.");
+      return;
+    }
     // Update name field
     document.getElementById('nameInput').value = responseData.usersName;
     // Update supervisor field
